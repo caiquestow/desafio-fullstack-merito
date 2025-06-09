@@ -1,7 +1,8 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-
 from django.db.models import Sum
+from decimal import Decimal
+
 
 
 class Fund(models.Model):
@@ -29,32 +30,31 @@ class Transaction(models.Model):
     date = models.DateField()
     amount = models.DecimalField(max_digits=12, decimal_places=2)
     transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPES)
-    shares_quantity = models.DecimalField(max_digits=12, decimal_places=4)
+    shares_quantity = models.DecimalField(max_digits=12, decimal_places=4, blank=True)
     
     class Meta:
         ordering = ['-date']
-
-    def clean(self):
-        """Validações customizadas antes de salvar"""
-        if self.transaction_type == 'WITHDRAWAL':
-            # Calcula saldo atual antes desta transação
-            current_balance = self.get_wallet_balance()
-            if self.amount > current_balance:
-                raise ValidationError("Saldo insuficiente para saque.")
-            
-    def get_wallet_balance(self):
-        """Calcula saldo atual da carteira"""
-        deposits = Transaction.objects.filter(
-            transaction_type='DEPOSIT'
-        ).aggregate(total=Sum('amount'))['total'] or 0
-        
-        withdrawals = Transaction.objects.filter(
-            transaction_type='WITHDRAWAL'
-        ).aggregate(total=Sum('amount'))['total'] or 0
-        
-        return deposits - withdrawals
     
     def save(self, *args, **kwargs):
-        """Sobrescreve save para chamar clean()"""
-        self.clean()  # Chama as validações
+        # Calcular quantidade de cotas automaticamente
+        if self.fund and self.amount:
+            self.shares_quantity = self.amount / self.fund.share_price
+            
+        # Para resgates, tornar quantidade negativa
+        if self.transaction_type == 'WITHDRAWAL' and self.shares_quantity > 0:
+            self.shares_quantity = -self.shares_quantity
+            
         super().save(*args, **kwargs)
+
+    @classmethod
+    def get_wallet_balance(cls):
+        """Calcula saldo atual da carteira"""
+        deposits = cls.objects.filter(
+            transaction_type='DEPOSIT'
+        ).aggregate(total=Sum('amount'))['total'] or Decimal('0')
+        
+        withdrawals = cls.objects.filter(
+            transaction_type='WITHDRAWAL'
+        ).aggregate(total=Sum('amount'))['total'] or Decimal('0')
+        
+        return deposits - withdrawals

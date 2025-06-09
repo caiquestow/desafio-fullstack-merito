@@ -6,11 +6,11 @@ const TransactionForm = ({ onTransactionCreated }) => {
     fund: '',
     date: '',
     amount: '',
-    transaction_type: 'DEPOSIT',
-    shares_quantity: ''
+    transaction_type: 'DEPOSIT'
   });
   const [funds, setFunds] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchFunds();
@@ -28,6 +28,7 @@ const TransactionForm = ({ onTransactionCreated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError('');
     
     try {
       await transactionsAPI.create(formData);
@@ -36,13 +37,16 @@ const TransactionForm = ({ onTransactionCreated }) => {
         fund: '',
         date: '',
         amount: '',
-        transaction_type: 'DEPOSIT',
-        shares_quantity: ''
+        transaction_type: 'DEPOSIT'
       });
       onTransactionCreated();
     } catch (error) {
-      alert('Erro ao criar transação');
-    //   console.error(error);
+      if (error.response?.data) {
+        const errorMsg = Object.values(error.response.data).flat().join(', ');
+        setError(errorMsg);
+      } else {
+        setError('Erro ao criar transação');
+      }
     } finally {
       setLoading(false);
     }
@@ -61,6 +65,12 @@ const TransactionForm = ({ onTransactionCreated }) => {
         <h3>Create New Transaction</h3>
       </div>
       <div className="card-body">
+        {error && (
+          <div className="alert alert-danger" role="alert">
+            {error}
+          </div>
+        )}
+        
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label className="form-label">Fund</label>
@@ -74,7 +84,7 @@ const TransactionForm = ({ onTransactionCreated }) => {
               <option value="">Select a fund</option>
               {funds.map(fund => (
                 <option key={fund.id} value={fund.id}>
-                  {fund.ticker} - {fund.name}
+                  {fund.ticker} - {fund.name} (${fund.share_price}/share)
                 </option>
               ))}
             </select>
@@ -97,12 +107,16 @@ const TransactionForm = ({ onTransactionCreated }) => {
             <input
               type="number"
               step="0.01"
+              min="0.01"
               className="form-control"
               name="amount"
               value={formData.amount}
               onChange={handleChange}
               required
             />
+            <div className="form-text">
+              The number of shares will be calculated automatically based on the fund's current price.
+            </div>
           </div>
           
           <div className="mb-3">
@@ -113,22 +127,9 @@ const TransactionForm = ({ onTransactionCreated }) => {
               value={formData.transaction_type}
               onChange={handleChange}
             >
-              <option value="DEPOSIT">Deposit</option>
-              <option value="WITHDRAWAL">Withdrawal</option>
+              <option value="DEPOSIT">Deposit (Buy shares)</option>
+              <option value="WITHDRAWAL">Withdrawal (Sell shares)</option>
             </select>
-          </div>
-          
-          <div className="mb-3">
-            <label className="form-label">Shares Quantity</label>
-            <input
-              type="number"
-              step="0.0001"
-              className="form-control"
-              name="shares_quantity"
-              value={formData.shares_quantity}
-              onChange={handleChange}
-              required
-            />
           </div>
           
           <button type="submit" className="btn btn-primary" disabled={loading}>
