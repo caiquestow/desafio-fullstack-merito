@@ -1,70 +1,224 @@
-# Getting Started with Create React App
+# Desafio FullStack Mérito - Dashboard de Investimento
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Sistema para cadastrar fundos de investimento, registrar movimentações e controlar saldo da carteira.
 
-## Available Scripts
+## 🚀 Tecnologias Utilizadas
 
-In the project directory, you can run:
+- **Backend**: Django + Django REST Framework
+- **Frontend**: React.js
+- **Banco de Dados**: SQLite
+- **Containerização**: Docker (backend)
 
-### `npm start`
+## 📋 Funcionalidades
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- ✅ Cadastro de fundos de investimento (nome, código, tipo, valor da cota)
+- ✅ Registro de movimentações (aportes e resgates)
+- ✅ Controle de saldo da carteira
+- ✅ Validação de saldo insuficiente
+- ✅ Visualização de movimentações ordenadas por data
+- ✅ Interface React consumindo API REST
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🐳 Como rodar o Backend (Docker)
 
-### `npm test`
+### Pré-requisitos
+- Docker
+- Docker Compose
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Passos
+```bash
+# 1. Clone o repositório
+git clone <seu-repositorio>
+cd desafio-fullstack-merito
 
-### `npm run build`
+# 2. Subir o backend com Docker
+docker-compose up --build
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# 3. Criar superuser (opcional, em outro terminal)
+docker-compose exec backend python manage.py createsuperuser
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+O backend estará disponível em: http://localhost:8000
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## ⚛️ Como rodar o Frontend (Local)
 
-### `npm run eject`
+### Pré-requisitos
+- Node.js (versão 16+)
+- npm ou yarn
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Passos
+```bash
+# 1. Navegar para a pasta do frontend
+cd frontend
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# 2. Instalar dependências
+npm install
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+# 3. Iniciar o servidor de desenvolvimento
+npm start
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+O frontend estará disponível em: http://localhost:3000
 
-## Learn More
+## 🔌 APIs Disponíveis
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Fundos
+- `GET /api/funds/` - Listar todos os fundos
+- `POST /api/funds/` - Criar novo fundo
+- `GET /api/funds/{id}/` - Detalhes de um fundo
+- `PUT /api/funds/{id}/` - Atualizar fundo
+- `DELETE /api/funds/{id}/` - Deletar fundo
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### Exemplo de criação de fundo:
+```json
+POST /api/funds/
+{
+  "nome": "Fundo XYZ",
+  "codigo": "XYZ11",
+  "tipo": "FII",
+  "valor_cota": 100.50
+}
+```
 
-### Code Splitting
+### Transações
+- `GET /api/transactions/` - Listar todas as transações
+- `POST /api/transactions/` - Criar nova transação
+- `GET /api/transactions/{id}/` - Detalhes de uma transação
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+#### Exemplo de transação (aporte):
+```json
+POST /api/transactions/
+{
+  "fund": 1,
+  "tipo": "aporte",
+  "valor": 1000.00,
+  "data": "2024-06-09"
+}
+```
 
-### Analyzing the Bundle Size
+#### Exemplo de transação (resgate):
+```json
+POST /api/transactions/
+{
+  "fund": 1,
+  "tipo": "resgate",
+  "valor": 500.00,
+  "data": "2024-06-09"
+}
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🧪 Como testar as APIs
 
-### Making a Progressive Web App
+### Via curl:
+```bash
+# Listar fundos
+curl -X GET http://localhost:8000/api/funds/
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+# Criar fundo
+curl -X POST http://localhost:8000/api/funds/ \
+  -H "Content-Type: application/json" \
+  -d '{"nome": "Teste", "codigo": "TEST11", "tipo": "FII", "valor_cota": 100.00}'
 
-### Advanced Configuration
+# Listar transações
+curl -X GET http://localhost:8000/api/transactions/
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+# Fazer aporte
+curl -X POST http://localhost:8000/api/transactions/ \
+  -H "Content-Type: application/json" \
+  -d '{"fund": 1, "tipo": "aporte", "valor": 1000.00, "data": "2024-06-09"}'
+```
 
-### Deployment
+### Via Postman:
+1. Importe a collection (se disponível)
+2. Configure base URL: http://localhost:8000
+3. Teste os endpoints listados acima
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 🗂️ Estrutura do Projeto
 
-### `npm run build` fails to minify
+```
+desafio-fullstack-merito/
+├── backend/
+│   ├── investments/          # App principal
+│   │   ├── models.py        # Modelos (Fund, Transaction)
+│   │   ├── serializers.py   # Serializers DRF
+│   │   ├── views.py         # ViewSets da API
+│   │   └── urls.py          # URLs da API
+│   ├── backend/             # Configurações Django
+│   ├── db/                  # Banco SQLite
+│   ├── Dockerfile           # Container do backend
+│   └── requirements.txt     # Dependências Python
+├── frontend/
+│   ├── src/
+│   │   ├── components/      # Componentes React
+│   │   ├── services/        # Chamadas para API
+│   │   └── App.js           # Componente principal
+│   └── package.json         # Dependências Node
+├── docker-compose.yml       # Orquestração Docker
+└── README.md               # Este arquivo
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🔧 Comandos Úteis
+
+### Docker:
+```bash
+# Ver logs do backend
+docker-compose logs -f backend
+
+# Executar comando no container
+docker-compose exec backend python manage.py shell
+
+# Parar containers
+docker-compose down
+
+# Reconstruir imagem
+docker-compose build backend
+```
+
+### Django (dentro do container):
+```bash
+# Migrations
+docker-compose exec backend python manage.py makemigrations
+docker-compose exec backend python manage.py migrate
+
+# Shell Django
+docker-compose exec backend python manage.py shell
+
+# Criar superuser
+docker-compose exec backend python manage.py createsuperuser
+```
+
+## 🚨 Validações Implementadas
+
+- ✅ Saldo insuficiente para resgates
+- ✅ Valores negativos não permitidos
+- ✅ Campos obrigatórios
+- ✅ Tipos de transação válidos (aporte/resgate)
+
+## 🧪 Testes
+
+Para rodar os testes do backend:
+```bash
+docker-compose exec backend python manage.py test
+```
+
+## 📝 Observações
+
+- O frontend consome a API REST do backend
+- Dados são persistidos em SQLite através de volume Docker
+- CORS configurado para desenvolvimento
+- Não há autenticação implementada (conforme especificação)
+- Interface funcional, foco na lógica de negócios
+
+## 🛠️ Melhorias Futuras
+
+- [ ] Testes automatizados mais abrangentes
+- [ ] Interface mais elaborada
+- [ ] Integração com APIs externas de cotações
+- [ ] Sistema de autenticação
+- [ ] Deploy automatizado
+
+## 📞 Suporte
+
+Em caso de dúvidas ou problemas:
+1. Verifique se o Docker está rodando
+2. Confirme que as portas 8000 e 3000 estão livres
+3. Veja os logs: `docker-compose logs -f`
