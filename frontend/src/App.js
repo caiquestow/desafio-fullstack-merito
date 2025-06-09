@@ -7,10 +7,10 @@ import WalletBalance from './components/WalletBalance';
 
 function App() {
   const [activeTab, setActiveTab] = useState('wallet');
-  const [refreshData, setRefreshData] = useState(0);
+  const [reload, setReload] = useState(0);
 
   const handleDataUpdate = () => {
-    setRefreshData(prev => prev + 1);
+    setReload(prev => prev + 1);
   };
 
   return (
@@ -48,8 +48,8 @@ function App() {
       {/* Content */}
       {activeTab === 'wallet' && (
         <div>
-          <WalletBalance key={refreshData} />
-          <TransactionTable key={refreshData} />
+          <WalletBalance key={reload} />
+          <TransactionTable key={reload} />
         </div>
       )}
       

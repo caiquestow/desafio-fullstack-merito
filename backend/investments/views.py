@@ -13,8 +13,10 @@ class TransactionViewSet(viewsets.ModelViewSet):
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
 
+# Calcula o saldo atual da carteira
 @api_view(['GET'])
-def wallet_balance(request):  # saldo_carteira → wallet_balance
+def wallet_balance(request):
+    # Soma todos os aportes
     deposits = Transaction.objects.filter(transaction_type='DEPOSIT').aggregate(
         total=Sum('amount')
     )['total'] or 0

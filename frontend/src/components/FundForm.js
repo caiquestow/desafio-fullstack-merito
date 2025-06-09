@@ -25,8 +25,8 @@ const FundForm = ({ onFundCreated }) => {
       });
       onFundCreated();
     } catch (error) {
-      alert('Error creating fund');
-      console.error(error);
+      alert('Erro ao criar o fundo');
+    //   console.error(error);
     } finally {
       setLoading(false);
     }

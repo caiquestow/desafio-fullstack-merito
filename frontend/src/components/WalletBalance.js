@@ -14,7 +14,7 @@ const WalletBalance = () => {
       const response = await walletAPI.balance();
       setBalance(response.data);
     } catch (error) {
-      console.error('Error fetching balance:', error);
+      console.error('Erro ao consultar saldo:', error);
     } finally {
       setLoading(false);
     }
