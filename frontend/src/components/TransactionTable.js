@@ -26,32 +26,32 @@ const TransactionTable = () => {
   };
 
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('pt-br', {
       style: 'currency',
-      currency: 'USD'
+      currency: 'BRL'
     }).format(amount);
   };
 
-  if (loading) return <div>Loading transactions...</div>;
+  if (loading) return <div>Carregando transações...</div>;
 
   return (
     <div className="card">
       <div className="card-header">
-        <h3>Recent Transactions</h3>
+        <h3>Transações Recentes</h3>
       </div>
       <div className="card-body">
         {transactions.length === 0 ? (
-          <p>No transactions found.</p>
+          <p>Nenhuma transação encontrada.</p>
         ) : (
           <div className="table-responsive">
             <table className="table table-striped">
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Fund</th>
-                  <th>Type</th>
-                  <th>Amount</th>
-                  <th>Shares</th>
+                  <th>Data</th>
+                  <th>Fundo</th>
+                  <th>Tipo</th>
+                  <th>Valor</th>
+                  <th>Qtde</th>
                 </tr>
               </thead>
               <tbody>
@@ -65,7 +65,7 @@ const TransactionTable = () => {
                           ? 'bg-success' 
                           : 'bg-danger'
                       }`}>
-                        {transaction.transaction_type === 'DEPOSIT' ? 'Deposit' : 'Withdrawal'}
+                        {transaction.transaction_type === 'DEPOSIT' ? 'Depósito' : 'Saque'}
                       </span>
                     </td>
                     <td>{formatCurrency(transaction.amount)}</td>

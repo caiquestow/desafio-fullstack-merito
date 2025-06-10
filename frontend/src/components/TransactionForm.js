@@ -32,7 +32,7 @@ const TransactionForm = ({ onTransactionCreated }) => {
     
     try {
       await transactionsAPI.create(formData);
-      alert('Transaction created successfully!');
+      alert('Transação feita com sucesso!');
       setFormData({
         fund: '',
         date: '',
@@ -45,7 +45,7 @@ const TransactionForm = ({ onTransactionCreated }) => {
         const errorMsg = Object.values(error.response.data).flat().join(', ');
         setError(errorMsg);
       } else {
-        setError('Erro ao criar transação');
+        setError('Erro ao fazer transação');
       }
     } finally {
       setLoading(false);
@@ -62,7 +62,7 @@ const TransactionForm = ({ onTransactionCreated }) => {
   return (
     <div className="card">
       <div className="card-header">
-        <h3>Create New Transaction</h3>
+        <h3>Fazer Nova Transação</h3>
       </div>
       <div className="card-body">
         {error && (
@@ -73,7 +73,7 @@ const TransactionForm = ({ onTransactionCreated }) => {
         
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label className="form-label">Fund</label>
+            <label className="form-label">Fundo</label>
             <select
               className="form-control"
               name="fund"
@@ -81,17 +81,17 @@ const TransactionForm = ({ onTransactionCreated }) => {
               onChange={handleChange}
               required
             >
-              <option value="">Select a fund</option>
+              <option value="">Selecione um fundo</option>
               {funds.map(fund => (
                 <option key={fund.id} value={fund.id}>
-                  {fund.ticker} - {fund.name} (${fund.share_price}/share)
+                  {fund.ticker} - {fund.name} (R${fund.share_price}/cota)
                 </option>
               ))}
             </select>
           </div>
           
           <div className="mb-3">
-            <label className="form-label">Date</label>
+            <label className="form-label">Data</label>
             <input
               type="date"
               className="form-control"
@@ -103,7 +103,7 @@ const TransactionForm = ({ onTransactionCreated }) => {
           </div>
           
           <div className="mb-3">
-            <label className="form-label">Amount ($)</label>
+            <label className="form-label">Valor (R$)</label>
             <input
               type="number"
               step="0.01"
@@ -115,25 +115,25 @@ const TransactionForm = ({ onTransactionCreated }) => {
               required
             />
             <div className="form-text">
-              The number of shares will be calculated automatically based on the fund's current price.
+              O numero de cotas será calculado automaticamente conforme o valor do fundo.
             </div>
           </div>
           
           <div className="mb-3">
-            <label className="form-label">Transaction Type</label>
+            <label className="form-label">Tipo da transação</label>
             <select
               className="form-control"
               name="transaction_type"
               value={formData.transaction_type}
               onChange={handleChange}
             >
-              <option value="DEPOSIT">Deposit (Buy shares)</option>
-              <option value="WITHDRAWAL">Withdrawal (Sell shares)</option>
+              <option value="DEPOSIT">Comprar (cotas)</option>
+              <option value="WITHDRAWAL">Vender (cotas)</option>
             </select>
           </div>
           
           <button type="submit" className="btn btn-primary" disabled={loading}>
-            {loading ? 'Creating...' : 'Create Transaction'}
+            {loading ? 'Criando...' : 'Fazer Transação'}
           </button>
         </form>
       </div>

@@ -11,7 +11,6 @@ Sistema para cadastrar fundos de investimento, registrar movimentações e contr
 
 ## 📋 Funcionalidades
 
-- ✅ Cadastro de fundos de investimento (nome, código, tipo, valor da cota)
 - ✅ Registro de movimentações (aportes e resgates)
 - ✅ Controle de saldo da carteira
 - ✅ Validação de saldo insuficiente
@@ -27,14 +26,12 @@ Sistema para cadastrar fundos de investimento, registrar movimentações e contr
 ### Passos
 ```bash
 # 1. Clone o repositório
-git clone <seu-repositorio>
+git clone https://github.com/caiquestow/desafio-fullstack-merito
 cd desafio-fullstack-merito
 
 # 2. Subir o backend com Docker
 docker-compose up --build
 
-# 3. Criar superuser (opcional, em outro terminal)
-docker-compose exec backend python manage.py createsuperuser
 ```
 
 O backend estará disponível em: http://localhost:8000

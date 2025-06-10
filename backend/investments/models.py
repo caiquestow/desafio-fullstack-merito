@@ -15,7 +15,7 @@ class Fund(models.Model):
     name = models.CharField(max_length=100)
     ticker = models.CharField(max_length=10, unique=True)
     fund_type = models.CharField(max_length=10, choices=FUND_TYPES)
-    share_price = models.DecimalField(max_digits=10, decimal_places=4)
+    share_price = models.DecimalField(max_digits=10, decimal_places=2)
     
     def __str__(self):
         return f"{self.ticker} - {self.name}"
@@ -30,7 +30,7 @@ class Transaction(models.Model):
     date = models.DateField()
     amount = models.DecimalField(max_digits=12, decimal_places=2)
     transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPES)
-    shares_quantity = models.DecimalField(max_digits=12, decimal_places=4, blank=True)
+    shares_quantity = models.DecimalField(max_digits=12, decimal_places=2, blank=True)
     
     class Meta:
         ordering = ['-date']

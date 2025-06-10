@@ -20,14 +20,14 @@ const WalletBalance = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div>Carregando...</div>;
 
   return (
     <div className="row mb-4">
       <div className="col-md-4">
         <div className="card text-center">
           <div className="card-body">
-            <h5 className="card-title">Current Balance</h5>
+            <h5 className="card-title">Saldo atual</h5>
             <h3 className="text-primary">
               ${balance?.balance?.toFixed(2) || '0.00'}
             </h3>
@@ -37,7 +37,7 @@ const WalletBalance = () => {
       <div className="col-md-4">
         <div className="card text-center">
           <div className="card-body">
-            <h5 className="card-title">Total Deposits</h5>
+            <h5 className="card-title">Total Depositos</h5>
             <h4 className="text-success">
               ${balance?.total_deposits?.toFixed(2) || '0.00'}
             </h4>
@@ -47,7 +47,7 @@ const WalletBalance = () => {
       <div className="col-md-4">
         <div className="card text-center">
           <div className="card-body">
-            <h5 className="card-title">Total Withdrawals</h5>
+            <h5 className="card-title">Total Saques</h5>
             <h4 className="text-danger">
               ${balance?.total_withdrawals?.toFixed(2) || '0.00'}
             </h4>

@@ -15,37 +15,35 @@ function App() {
 
   return (
     <div className="container mt-4">
-      <h1 className="text-center mb-4">Investment Dashboard</h1>
+      <h1 className="text-center mb-4">Dashboard de investimentos</h1>
       
-      {/* Navigation */}
       <ul className="nav nav-tabs mb-4">
         <li className="nav-item">
           <button 
             className={`nav-link ${activeTab === 'wallet' ? 'active' : ''}`}
             onClick={() => setActiveTab('wallet')}
           >
-            Wallet
+            Carteira
           </button>
         </li>
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <button 
             className={`nav-link ${activeTab === 'funds' ? 'active' : ''}`}
             onClick={() => setActiveTab('funds')}
           >
-            Funds
+            Fundos
           </button>
-        </li>
+        </li> */}
         <li className="nav-item">
           <button 
             className={`nav-link ${activeTab === 'transactions' ? 'active' : ''}`}
             onClick={() => setActiveTab('transactions')}
           >
-            Transactions
+            Compra/Venda
           </button>
         </li>
       </ul>
 
-      {/* Content */}
       {activeTab === 'wallet' && (
         <div>
           <WalletBalance key={reload} />

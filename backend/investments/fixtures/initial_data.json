@@ -1,0 +1,122 @@
+[
+  {
+    "model": "investments.fund",
+    "pk": 1,
+    "fields": {
+      "name": "Tesouro Selic 2029",
+      "ticker": "SELIC29",
+      "fund_type": "BOND",
+      "share_price": "100.52"
+    }
+  },
+  {
+    "model": "investments.fund",
+    "pk": 2,
+    "fields": {
+      "name": "Verde Asset Management FIC FIM",
+      "ticker": "VERDE11",
+      "fund_type": "MULTI",
+      "share_price": "45.89"
+    }
+  },
+  {
+    "model": "investments.fund",
+    "pk": 3,
+    "fields": {
+      "name": "XP Allocation FIC FIM",
+      "ticker": "XPALLOC",
+      "fund_type": "MULTI",
+      "share_price": "156.78"
+    }
+  },
+  {
+    "model": "investments.fund",
+    "pk": 4,
+    "fields": {
+      "name": "Itaú Personnalité Ações",
+      "ticker": "ITAUAC",
+      "fund_type": "STOCK",
+      "share_price": "234.56"
+    }
+  },
+  {
+    "model": "investments.fund",
+    "pk": 5,
+    "fields": {
+      "name": "BTG Pactual Absoluto FIC FIM",
+      "ticker": "BTGABS",
+      "fund_type": "MULTI",
+      "share_price": "89.34"
+    }
+  },
+  {
+    "model": "investments.fund",
+    "pk": 6,
+    "fields": {
+      "name": "Tesouro IPCA+ 2035",
+      "ticker": "IPCA35",
+      "fund_type": "BOND",
+      "share_price": "75.21"
+    }
+  },
+  {
+    "model": "investments.fund",
+    "pk": 7,
+    "fields": {
+      "name": "Bradesco Prime Yield FIC FIM",
+      "ticker": "BRADPR",
+      "fund_type": "BOND",
+      "share_price": "123.47"
+    }
+  },
+  {
+    "model": "investments.fund",
+    "pk": 8,
+    "fields": {
+      "name": "Santander Equity Brazil FIC FIA",
+      "ticker": "SANTBR",
+      "fund_type": "STOCK",
+      "share_price": "198.76"
+    }
+  },
+  {
+    "model": "investments.fund",
+    "pk": 9,
+    "fields": {
+      "name": "Caixa FIC Referenciado DI",
+      "ticker": "CAIXDI",
+      "fund_type": "BOND",
+      "share_price": "67.89"
+    }
+  },
+  {
+    "model": "investments.fund",
+    "pk": 10,
+    "fields": {
+      "name": "Kinea Macro Estratégia FIC FIM",
+      "ticker": "KINEAM",
+      "fund_type": "MULTI",
+      "share_price": "312.10"
+    }
+  },
+  {
+    "model": "investments.fund",
+    "pk": 11,
+    "fields": {
+      "name": "Squadra Long Biased FIC FIA",
+      "ticker": "SQUADR",
+      "fund_type": "STOCK",
+      "share_price": "445.67"
+    }
+  },
+  {
+    "model": "investments.fund",
+    "pk": 12,
+    "fields": {
+      "name": "Opportunity Total FIC FIM",
+      "ticker": "OPPORT",
+      "fund_type": "MULTI",
+      "share_price": "178.90"
+    }
+  }
+]
