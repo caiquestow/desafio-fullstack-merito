@@ -9,6 +9,7 @@ const TransactionForm = ({ onTransactionCreated }) => {
     transaction_type: 'DEPOSIT'
   });
   const [funds, setFunds] = useState([]);
+  const [selectedFund, setSelectedFund] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -25,10 +26,31 @@ const TransactionForm = ({ onTransactionCreated }) => {
     }
   };
 
+  const handleFundChange = (e) => {
+    const fundId = e.target.value;
+    setFormData({ ...formData, fund: fundId });
+    
+    if (fundId) {
+      const fund = funds.find(f => f.id.toString() === fundId);
+      setSelectedFund(fund);
+    } else {
+      setSelectedFund(null);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    
+    // Validação adicional no frontend
+    if (formData.transaction_type === 'WITHDRAWAL' && selectedFund) {
+      if (parseFloat(formData.amount) > selectedFund.current_balance) {
+        setError(`Saldo insuficiente no fundo ${selectedFund.ticker}. Saldo disponível: R$ ${selectedFund.current_balance.toFixed(2)}`);
+        setLoading(false);
+        return;
+      }
+    }
     
     try {
       await transactionsAPI.create(formData);
@@ -39,7 +61,9 @@ const TransactionForm = ({ onTransactionCreated }) => {
         amount: '',
         transaction_type: 'DEPOSIT'
       });
+      setSelectedFund(null);
       onTransactionCreated();
+      fetchFunds(); // Recarregar dados dos fundos
     } catch (error) {
       if (error.response?.data) {
         const errorMsg = Object.values(error.response.data).flat().join(', ');
@@ -57,6 +81,13 @@ const TransactionForm = ({ onTransactionCreated }) => {
       ...formData,
       [e.target.name]: e.target.value
     });
+  };
+
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(amount);
   };
 
   return (
@@ -78,17 +109,39 @@ const TransactionForm = ({ onTransactionCreated }) => {
               className="form-control"
               name="fund"
               value={formData.fund}
-              onChange={handleChange}
+              onChange={handleFundChange}
               required
             >
               <option value="">Selecione um fundo</option>
               {funds.map(fund => (
                 <option key={fund.id} value={fund.id}>
-                  {fund.ticker} - {fund.name} (R${fund.share_price}/cota)
+                  {fund.ticker} - {fund.name} ({formatCurrency(fund.share_price)}/cota)
+                  {fund.current_balance > 0 && ` - Saldo: ${formatCurrency(fund.current_balance)}`}
                 </option>
               ))}
             </select>
           </div>
+
+          {/* Mostrar detalhes do fundo selecionado */}
+          {selectedFund && (
+            <div className="alert alert-info">
+              <h6><strong>{selectedFund.ticker} - {selectedFund.name}</strong></h6>
+              <div className="row">
+                <div className="col-md-4">
+                  <small>Saldo Disponível:</small><br/>
+                  <strong>{formatCurrency(selectedFund.current_balance)}</strong>
+                </div>
+                <div className="col-md-4">
+                  <small>Cotas Totais:</small><br/>
+                  <strong>{selectedFund.current_shares.toFixed(4)}</strong>
+                </div>
+                <div className="col-md-4">
+                  <small>Preço por Cota:</small><br/>
+                  <strong>{formatCurrency(selectedFund.share_price)}</strong>
+                </div>
+              </div>
+            </div>
+          )}
           
           <div className="mb-3">
             <label className="form-label">Data</label>
@@ -115,7 +168,13 @@ const TransactionForm = ({ onTransactionCreated }) => {
               required
             />
             <div className="form-text">
-              O numero de cotas será calculado automaticamente conforme o valor do fundo.
+              O número de cotas será calculado automaticamente conforme o valor do fundo.
+              {formData.amount && selectedFund && (
+                <div className="mt-1">
+                  <strong>Cotas a serem {formData.transaction_type === 'DEPOSIT' ? 'compradas' : 'vendidas'}: </strong>
+                  {(parseFloat(formData.amount || 0) / selectedFund.share_price).toFixed(4)}
+                </div>
+              )}
             </div>
           </div>
           
@@ -133,7 +192,7 @@ const TransactionForm = ({ onTransactionCreated }) => {
           </div>
           
           <button type="submit" className="btn btn-primary" disabled={loading}>
-            {loading ? 'Criando...' : 'Fazer Transação'}
+            {loading ? 'Processando...' : 'Fazer Transação'}
           </button>
         </form>
       </div>
