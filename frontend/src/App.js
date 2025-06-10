@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import FundForm from './components/FundForm';
 import TransactionForm from './components/TransactionForm';
 import TransactionTable from './components/TransactionTable';
 import WalletBalance from './components/WalletBalance';
@@ -49,10 +48,6 @@ function App() {
           <WalletBalance key={reload} />
           <TransactionTable key={reload} />
         </div>
-      )}
-      
-      {activeTab === 'funds' && (
-        <FundForm onFundCreated={handleDataUpdate} />
       )}
       
       {activeTab === 'transactions' && (

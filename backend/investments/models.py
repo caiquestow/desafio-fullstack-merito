@@ -7,9 +7,9 @@ from decimal import Decimal
 
 class Fund(models.Model):
     FUND_TYPES = [
-        ('STOCK', 'Stock Fund'),
-        ('BOND', 'Bond Fund'),
-        ('MULTI', 'Multi Market'),
+        ('STOCK', 'Fundo de Ações'),
+        ('BOND', 'Fundo de Renda Fixa'),
+        ('MULTI', 'Fundo Multimercado'),
     ]
     
     name = models.CharField(max_length=100)
@@ -22,8 +22,8 @@ class Fund(models.Model):
 
 class Transaction(models.Model):
     TRANSACTION_TYPES = [
-        ('DEPOSIT', 'Deposit'),
-        ('WITHDRAWAL', 'Withdrawal'),
+        ('DEPOSIT', 'Aporte'),
+        ('WITHDRAWAL', 'Resgate'),
     ]
     
     fund = models.ForeignKey(Fund, on_delete=models.CASCADE)

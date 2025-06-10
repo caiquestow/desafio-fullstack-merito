@@ -29,7 +29,7 @@ const WalletBalance = () => {
           <div className="card-body">
             <h5 className="card-title">Saldo atual</h5>
             <h3 className="text-primary">
-              ${balance?.balance?.toFixed(2) || '0.00'}
+              R${balance?.balance?.toFixed(2) || '0.00'}
             </h3>
           </div>
         </div>
@@ -39,7 +39,7 @@ const WalletBalance = () => {
           <div className="card-body">
             <h5 className="card-title">Total Depositos</h5>
             <h4 className="text-success">
-              ${balance?.total_deposits?.toFixed(2) || '0.00'}
+              R${balance?.total_deposits?.toFixed(2) || '0.00'}
             </h4>
           </div>
         </div>
@@ -49,7 +49,7 @@ const WalletBalance = () => {
           <div className="card-body">
             <h5 className="card-title">Total Saques</h5>
             <h4 className="text-danger">
-              ${balance?.total_withdrawals?.toFixed(2) || '0.00'}
+              R${balance?.total_withdrawals?.toFixed(2) || '0.00'}
             </h4>
           </div>
         </div>

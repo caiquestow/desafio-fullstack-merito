@@ -65,7 +65,7 @@ const TransactionTable = () => {
                           ? 'bg-success' 
                           : 'bg-danger'
                       }`}>
-                        {transaction.transaction_type === 'DEPOSIT' ? 'Depósito' : 'Saque'}
+                        {transaction.transaction_type === 'DEPOSIT' ? 'Aporte' : 'Resgate'}
                       </span>
                     </td>
                     <td>{formatCurrency(transaction.amount)}</td>
