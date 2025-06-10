@@ -1,221 +1,72 @@
-# Desafio FullStack Mérito - Dashboard de Investimento
+# Dashboard de Investimentos - Desafio FullStack
 
-Sistema para cadastrar fundos de investimento, registrar movimentações e controlar saldo da carteira.
+Sistema para gestão de carteira de investimentos com registro de movimentações e controle de saldo.
 
-## 🚀 Tecnologias Utilizadas
+## 🚀 Tecnologias
 
-- **Backend**: Django + Django REST Framework
-- **Frontend**: React.js
-- **Banco de Dados**: SQLite
-- **Containerização**: Docker (backend)
+- **Backend**: Django + DRF (API REST)
+- **Frontend**: React.js + Bootstrap
+- **Banco**: SQLite
+- **Container**: Docker
 
-## 📋 Funcionalidades
+## 🗂️ Estrutura
 
-- ✅ Registro de movimentações (aportes e resgates)
-- ✅ Controle de saldo da carteira
-- ✅ Validação de saldo insuficiente
-- ✅ Visualização de movimentações ordenadas por data
-- ✅ Interface React consumindo API REST
+```
+projeto/
+├── backend/
+│   ├── investments/     # App principal
+│   ├── core/           # Settings Django
+│   └── Dockerfile      # Container
+├── frontend/
+│   ├── src/components/ # Componentes React
+│   └── src/services/   # API calls
+└── docker-compose.yml  # Orquestração
+```
 
-## 🐳 Como rodar o Backend (Docker)
+## ⚡ Quick Start
 
-### Pré-requisitos
-- Docker
-- Docker Compose
-
-### Passos
+### 1. Backend (Docker)
 ```bash
-# 1. Clone o repositório
 git clone https://github.com/caiquestow/desafio-fullstack-merito
 cd desafio-fullstack-merito
-
-# 2. Subir o backend com Docker
 docker-compose up --build
-
 ```
+✅ Backend rodando em: http://localhost:8000
 
-O backend estará disponível em: http://localhost:8000
-
-## ⚛️ Como rodar o Frontend (Local)
-
-### Pré-requisitos
-- Node.js (versão 16+)
-- npm ou yarn
-
-### Passos
+### 2. Frontend
 ```bash
-# 1. Navegar para a pasta do frontend
 cd frontend
-
-# 2. Instalar dependências
 npm install
-
-# 3. Iniciar o servidor de desenvolvimento
 npm start
 ```
+✅ Frontend rodando em: http://localhost:3000
 
-O frontend estará disponível em: http://localhost:3000
+## 🎯 Funcionalidades Implementadas
 
-## 🔌 APIs Disponíveis
+### Core Business
+- ✅ **Cadastro de Fundos** - 12 fundos pré-carregados
+- ✅ **Aportes e Resgates** - Transações com validação
+- ✅ **Controle de Saldo** - Validação de saldo insuficiente
+- ✅ **Cálculo Automático** - Quantidade de cotas baseada no valor
 
-### Fundos
-- `GET /api/funds/` - Listar todos os fundos
-- `POST /api/funds/` - Criar novo fundo
-- `GET /api/funds/{id}/` - Detalhes de um fundo
-- `PUT /api/funds/{id}/` - Atualizar fundo
-- `DELETE /api/funds/{id}/` - Deletar fundo
+## 🔌 Principais Endpoints
 
-#### Exemplo de criação de fundo:
-```json
-POST /api/funds/
-{
-  "nome": "Fundo XYZ",
-  "codigo": "XYZ11",
-  "tipo": "FII",
-  "valor_cota": 100.50
-}
-```
+```bash
+# Saldo da carteira
+GET /api/wallet/balance/
 
-### Transações
-- `GET /api/transactions/` - Listar todas as transações
-- `POST /api/transactions/` - Criar nova transação
-- `GET /api/transactions/{id}/` - Detalhes de uma transação
+# Listar fundos disponíveis
+GET /api/funds/
 
-#### Exemplo de transação (aporte):
-```json
+# Fazer transação
 POST /api/transactions/
 {
   "fund": 1,
-  "tipo": "aporte",
-  "valor": 1000.00,
-  "data": "2024-06-09"
+  "transaction_type": "DEPOSIT", // ou "WITHDRAWAL"
+  "amount": 1000.00,
+  "date": "2024-06-10"
 }
+
+# Histórico de transações
+GET /api/transactions/
 ```
-
-#### Exemplo de transação (resgate):
-```json
-POST /api/transactions/
-{
-  "fund": 1,
-  "tipo": "resgate",
-  "valor": 500.00,
-  "data": "2024-06-09"
-}
-```
-
-## 🧪 Como testar as APIs
-
-### Via curl:
-```bash
-# Listar fundos
-curl -X GET http://localhost:8000/api/funds/
-
-# Criar fundo
-curl -X POST http://localhost:8000/api/funds/ \
-  -H "Content-Type: application/json" \
-  -d '{"nome": "Teste", "codigo": "TEST11", "tipo": "FII", "valor_cota": 100.00}'
-
-# Listar transações
-curl -X GET http://localhost:8000/api/transactions/
-
-# Fazer aporte
-curl -X POST http://localhost:8000/api/transactions/ \
-  -H "Content-Type: application/json" \
-  -d '{"fund": 1, "tipo": "aporte", "valor": 1000.00, "data": "2024-06-09"}'
-```
-
-### Via Postman:
-1. Importe a collection (se disponível)
-2. Configure base URL: http://localhost:8000
-3. Teste os endpoints listados acima
-
-## 🗂️ Estrutura do Projeto
-
-```
-desafio-fullstack-merito/
-├── backend/
-│   ├── investments/          # App principal
-│   │   ├── models.py        # Modelos (Fund, Transaction)
-│   │   ├── serializers.py   # Serializers DRF
-│   │   ├── views.py         # ViewSets da API
-│   │   └── urls.py          # URLs da API
-│   ├── backend/             # Configurações Django
-│   ├── db/                  # Banco SQLite
-│   ├── Dockerfile           # Container do backend
-│   └── requirements.txt     # Dependências Python
-├── frontend/
-│   ├── src/
-│   │   ├── components/      # Componentes React
-│   │   ├── services/        # Chamadas para API
-│   │   └── App.js           # Componente principal
-│   └── package.json         # Dependências Node
-├── docker-compose.yml       # Orquestração Docker
-└── README.md               # Este arquivo
-```
-
-## 🔧 Comandos Úteis
-
-### Docker:
-```bash
-# Ver logs do backend
-docker-compose logs -f backend
-
-# Executar comando no container
-docker-compose exec backend python manage.py shell
-
-# Parar containers
-docker-compose down
-
-# Reconstruir imagem
-docker-compose build backend
-```
-
-### Django (dentro do container):
-```bash
-# Migrations
-docker-compose exec backend python manage.py makemigrations
-docker-compose exec backend python manage.py migrate
-
-# Shell Django
-docker-compose exec backend python manage.py shell
-
-# Criar superuser
-docker-compose exec backend python manage.py createsuperuser
-```
-
-## 🚨 Validações Implementadas
-
-- ✅ Saldo insuficiente para resgates
-- ✅ Valores negativos não permitidos
-- ✅ Campos obrigatórios
-- ✅ Tipos de transação válidos (aporte/resgate)
-
-## 🧪 Testes
-
-Para rodar os testes do backend:
-```bash
-docker-compose exec backend python manage.py test
-```
-
-## 📝 Observações
-
-- O frontend consome a API REST do backend
-- Dados são persistidos em SQLite através de volume Docker
-- CORS configurado para desenvolvimento
-- Não há autenticação implementada (conforme especificação)
-- Interface funcional, foco na lógica de negócios
-
-## 🛠️ Melhorias Futuras
-
-- [ ] Testes automatizados mais abrangentes
-- [ ] Interface mais elaborada
-- [ ] Integração com APIs externas de cotações
-- [ ] Sistema de autenticação
-- [ ] Deploy automatizado
-
-## 📞 Suporte
-
-Em caso de dúvidas ou problemas:
-1. Verifique se o Docker está rodando
-2. Confirme que as portas 8000 e 3000 estão livres
-3. Veja os logs: `docker-compose logs -f`

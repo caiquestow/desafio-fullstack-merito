@@ -115,8 +115,19 @@ TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
 
+# Configurações de formatação de número/moeda
+USE_THOUSAND_SEPARATOR = True
+THOUSAND_SEPARATOR = '.'
+DECIMAL_SEPARATOR = ','
+
+# Formatação de moeda brasileira
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
